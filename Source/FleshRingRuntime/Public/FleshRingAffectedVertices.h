@@ -742,6 +742,18 @@ public:
     const TArray<FRingAffectedData>& GetAllRingData() const { return RingDataArray; }
 
     /**
+     * Update Bulge data for a specific Ring (for Subdivision region extraction)
+     */
+    void UpdateBulgeData(int32 RingIndex, const TArray<uint32>& InBulgeIndices, const TArray<float>& InBulgeInfluences)
+    {
+        if (RingDataArray.IsValidIndex(RingIndex))
+        {
+            RingDataArray[RingIndex].BulgeIndices = InBulgeIndices;
+            RingDataArray[RingIndex].BulgeInfluences = InBulgeInfluences;
+        }
+    }
+
+    /**
      * Get the Spatial Hash for O(1) vertex queries
      * Used by Bulge calculation for performance optimization
      */

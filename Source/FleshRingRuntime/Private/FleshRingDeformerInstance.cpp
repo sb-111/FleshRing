@@ -900,6 +900,10 @@ void UFleshRingDeformerInstance::EnqueueWork(FEnqueueWorkDesc const& InDesc)
 
 		if (BulgeIndices.Num() > 0)
 		{
+			// Store in FRingAffectedData for Subdivision region extraction (must be before MoveTemp)
+			CurrentLODData.AffectedVerticesManager.UpdateBulgeData(
+				OriginalIdx, BulgeIndices, BulgeInfluences);
+
 			DispatchData.bEnableBulge = true;
 			DispatchData.BulgeIndices = MoveTemp(BulgeIndices);
 			DispatchData.BulgeInfluences = MoveTemp(BulgeInfluences);
