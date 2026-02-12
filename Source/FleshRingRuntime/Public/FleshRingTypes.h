@@ -699,7 +699,7 @@ struct FLESHRINGRUNTIME_API FFleshRingSettings
 	 * - Recommended: 1~1.5
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ring", meta = (EditCondition = "bEnableBulge", ClampMin = "1.0", ClampMax = "3.0", DisplayName = "Bulge Horizontal Spread"))
-	float BulgeRadialRange = 1.0f;
+	float BulgeRadialRange = 1.9f;
 
 	/**
 	 * Axial taper coefficient for Bulge collection range
@@ -709,7 +709,7 @@ struct FLESHRINGRUNTIME_API FFleshRingSettings
 	 * - Positive: Expands (widens further from ring, legacy behavior)
 	 */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ring", meta = (EditCondition = "bEnableBulge && InfluenceMode != EFleshRingInfluenceMode::VirtualBand", ClampMin = "-1.0", ClampMax = "1.0", DisplayName = "Bulge Horizontal Taper"))
-	float BulgeRadialTaper = 0.5f;
+	float BulgeRadialTaper = 0.0f;
 
 	/**
 	 * Upper Bulge strength (above Ring)
@@ -1061,7 +1061,7 @@ struct FLESHRINGRUNTIME_API FFleshRingSettings
 		, BulgeFalloff(EFleshRingFalloffType::WendlandC2)
 		, BulgeIntensity(1.0f)
 		, BulgeAxialRange(5.0f)
-		, BulgeRadialRange(1.0f)
+		, BulgeRadialRange(1.9f)
 		, UpperBulgeStrength(1.0f)
 		, LowerBulgeStrength(1.0f)
 		, TightnessStrength(1.5f)

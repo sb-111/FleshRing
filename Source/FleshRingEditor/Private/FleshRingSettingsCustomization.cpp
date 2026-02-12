@@ -1546,10 +1546,10 @@ void FFleshRingSettingsCustomization::CustomizeChildren(
 					FIsResetToDefaultVisible::CreateLambda([](TSharedPtr<IPropertyHandle> Handle) {
 						float Value;
 						Handle->GetValue(Value);
-						return !FMath::IsNearlyEqual(Value, 1.0f);
+						return !FMath::IsNearlyEqual(Value, 1.9f);
 					}),
 					FResetToDefaultHandler::CreateLambda([](TSharedPtr<IPropertyHandle> Handle) {
-						Handle->SetValue(1.0f);
+						Handle->SetValue(1.9f);
 					})
 				)
 			);
@@ -1563,10 +1563,10 @@ void FFleshRingSettingsCustomization::CustomizeChildren(
 					FIsResetToDefaultVisible::CreateLambda([](TSharedPtr<IPropertyHandle> Handle) {
 						float Value;
 						Handle->GetValue(Value);
-						return !FMath::IsNearlyEqual(Value, 0.5f);
+						return !FMath::IsNearlyEqual(Value, 0.0f);
 					}),
 					FResetToDefaultHandler::CreateLambda([](TSharedPtr<IPropertyHandle> Handle) {
-						Handle->SetValue(0.5f);
+						Handle->SetValue(0.0f);
 					})
 				)
 			);
