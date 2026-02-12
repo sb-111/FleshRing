@@ -108,11 +108,13 @@ bool UFleshRingAsset::RemoveRing(int32 Index)
 	{
 		Rings.RemoveAt(Index);
 
+#if WITH_EDITOR
 		// Auto-clear BakedMesh when all rings are removed
 		if (Rings.Num() == 0 && HasBakedMesh())
 		{
 			ClearBakedMesh();
 		}
+#endif
 
 		return true;
 	}
