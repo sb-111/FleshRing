@@ -1275,6 +1275,21 @@ void UFleshRingDeformerInstance::EnqueueWork(FEnqueueWorkDesc const& InDesc)
 					}
 				}
 			}
+
+			// Add Bulge-affected vertices to the union (BulgeIndices are separate from Tightness Indices)
+			if (DispatchData.bEnableBulge && DispatchData.BulgeIndices.Num() > 0)
+			{
+				for (const uint32 BulgeVertexIndex : DispatchData.BulgeIndices)
+				{
+					UnionIndexSet.Add(BulgeVertexIndex);
+
+					// Bulge-only vertices get hop=0 (fully recomputed normal)
+					if (!VertexToMaxHop.Contains(BulgeVertexIndex))
+					{
+						VertexToMaxHop.Add(BulgeVertexIndex, 0);
+					}
+				}
+			}
 		}
 
 		// Build unified arrays
