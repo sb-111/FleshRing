@@ -177,6 +177,7 @@ void FSubdivisionSettingsCustomization::CustomizeChildren(
 				[
 					SNew(SButton)
 					.OnClicked(this, &FSubdivisionSettingsCustomization::OnBakeMeshClicked)
+					.IsEnabled(this, &FSubdivisionSettingsCustomization::CanBakeMesh)
 					[
 						SNew(SBox)
 						.HAlign(HAlign_Center)
@@ -212,6 +213,7 @@ void FSubdivisionSettingsCustomization::CustomizeChildren(
 				[
 					SNew(SButton)
 					.OnClicked(this, &FSubdivisionSettingsCustomization::OnClearBakedMeshClicked)
+					.IsEnabled(this, &FSubdivisionSettingsCustomization::CanClearBakedMesh)
 					[
 						SNew(SBox)
 						.HAlign(HAlign_Center)
@@ -268,6 +270,32 @@ bool FSubdivisionSettingsCustomization::IsSubdivisionEnabled() const
 {
 	UFleshRingAsset* Asset = GetOuterAsset();
 	return Asset && Asset->SubdivisionSettings.bEnableSubdivision;
+}
+
+bool FSubdivisionSettingsCustomization::CanBakeMesh() const
+{
+	UFleshRingAsset* Asset = GetOuterAsset();
+	if (!Asset || Asset->Rings.Num() == 0)
+	{
+		return false;
+	}
+
+	// MeshBased rings require a valid RingMesh
+	for (const FFleshRingSettings& Ring : Asset->Rings)
+	{
+		if (Ring.InfluenceMode == EFleshRingInfluenceMode::MeshBased && Ring.RingMesh.IsNull())
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool FSubdivisionSettingsCustomization::CanClearBakedMesh() const
+{
+	UFleshRingAsset* Asset = GetOuterAsset();
+	return Asset && Asset->HasBakedMesh();
 }
 
 void FSubdivisionSettingsCustomization::SaveAsset(UFleshRingAsset* Asset)

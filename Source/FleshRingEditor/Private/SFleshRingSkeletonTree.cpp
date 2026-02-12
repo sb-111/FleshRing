@@ -1686,6 +1686,12 @@ void SFleshRingSkeletonTree::OnContextMenuDeleteRing()
 			Asset->EditorSelectionType = EFleshRingSelectionType::None;
 		}
 
+		// Auto-clear BakedMesh when all rings are removed
+		if (Asset->Rings.Num() == 0 && Asset->HasBakedMesh())
+		{
+			Asset->ClearBakedMesh();
+		}
+
 		// Call delegate (HandleRingDeleted handles RefreshPreview + RefreshTree)
 		// Called after transaction ends so mesh generation is not included in Undo history
 		OnRingDeleted.ExecuteIfBound();

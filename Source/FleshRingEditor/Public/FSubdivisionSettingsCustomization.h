@@ -61,6 +61,12 @@ private:
 	/** Clear Baked Mesh button clicked */
 	FReply OnClearBakedMeshClicked();
 
+	/** Whether Bake button should be enabled (Rings > 0) */
+	bool CanBakeMesh() const;
+
+	/** Whether Clear button should be enabled (BakedMesh exists) */
+	bool CanClearBakedMesh() const;
+
 	/** Saves the asset (includes Perforce checkout prompt) */
 	void SaveAsset(UFleshRingAsset* Asset);
 

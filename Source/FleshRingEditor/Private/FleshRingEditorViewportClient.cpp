@@ -580,6 +580,12 @@ void FFleshRingEditorViewportClient::DeleteSelectedRing()
 	PreviewScene->SetSelectedRingIndex(-1);
 	SelectionType = EFleshRingSelectionType::None;
 
+	// Auto-clear BakedMesh when all rings are removed
+	if (EditingAsset->Rings.Num() == 0 && EditingAsset->HasBakedMesh())
+	{
+		EditingAsset->ClearBakedMesh();
+	}
+
 	// Call delegate (tree refresh)
 	// Called after transaction ends so mesh creation isn't included in Undo history
 	OnRingDeletedInViewport.ExecuteIfBound();

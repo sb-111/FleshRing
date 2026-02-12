@@ -107,6 +107,13 @@ bool UFleshRingAsset::RemoveRing(int32 Index)
 	if (Rings.IsValidIndex(Index))
 	{
 		Rings.RemoveAt(Index);
+
+		// Auto-clear BakedMesh when all rings are removed
+		if (Rings.Num() == 0 && HasBakedMesh())
+		{
+			ClearBakedMesh();
+		}
+
 		return true;
 	}
 	return false;
@@ -2377,6 +2384,22 @@ bool UFleshRingAsset::GenerateBakedMesh(UFleshRingComponent* SourceComponent)
 	{
 		UE_LOG(LogFleshRingAsset, Warning, TEXT("GenerateBakedMesh: SourceComponent has no resolved target mesh"));
 		return false;
+	}
+
+	if (Rings.Num() == 0)
+	{
+		UE_LOG(LogFleshRingAsset, Warning, TEXT("GenerateBakedMesh: No rings configured"));
+		return false;
+	}
+
+	// Abort if any MeshBased ring has no RingMesh assigned
+	for (const FFleshRingSettings& Ring : Rings)
+	{
+		if (Ring.InfluenceMode == EFleshRingInfluenceMode::MeshBased && Ring.RingMesh.IsNull())
+		{
+			UE_LOG(LogFleshRingAsset, Warning, TEXT("GenerateBakedMesh: MeshBased ring exists but RingMesh is not set"));
+			return false;
+		}
 	}
 
 	// =====================================
