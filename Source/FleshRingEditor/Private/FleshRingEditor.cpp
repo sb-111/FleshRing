@@ -40,7 +40,11 @@ void FFleshRingEditorModule::StartupModule()
 		FVector2D(16.0f, 16.0f)));
 
 	// Register FleshRingAsset class icon
-	const FString PluginResourcesPath = FPaths::ProjectPluginsDir() / TEXT("FleshRingPlugin/Resources");
+	// Use IPluginManager to resolve actual plugin path (FAB may rename plugin folder)
+	TSharedPtr<IPlugin> Plugin = IPluginManager::Get().FindPlugin(TEXT("FleshRingPlugin"));
+	const FString PluginResourcesPath = Plugin.IsValid()
+		? FPaths::Combine(Plugin->GetBaseDir(), TEXT("Resources"))
+		: FPaths::ProjectPluginsDir() / TEXT("FleshRingPlugin/Resources");
 	const FString ClassIconPath = PluginResourcesPath / TEXT("FleshRingAssetIcon.png");
 	StyleSet->Set("ClassIcon.FleshRingAsset", new FSlateImageBrush(ClassIconPath, FVector2D(16.0f, 16.0f)));
 

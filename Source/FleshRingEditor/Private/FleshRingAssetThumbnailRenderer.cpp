@@ -9,6 +9,7 @@
 #include "CanvasTypes.h"
 #include "ThumbnailRendering/ThumbnailManager.h"
 #include "ThumbnailRendering/SkeletalMeshThumbnailRenderer.h"
+#include "Interfaces/IPluginManager.h"
 
 UFleshRingAssetThumbnailRenderer::UFleshRingAssetThumbnailRenderer()
 {
@@ -41,9 +42,14 @@ void UFleshRingAssetThumbnailRenderer::Draw(UObject* Object, int32 X, int32 Y, u
 	// Lazy load default icon texture
 	if (!DefaultIconTexture)
 	{
-		// Attempt to load from plugin Content path
-		const FString IconPath = TEXT("/FleshRingPlugin/T_FleshRingAssetThumbnail");
-		DefaultIconTexture = LoadObject<UTexture2D>(nullptr, *IconPath);
+		// Use IPluginManager to resolve actual content mount point (FAB may rename plugin folder)
+		TSharedPtr<IPlugin> Plugin = IPluginManager::Get().FindPlugin(TEXT("FleshRingPlugin"));
+		if (Plugin.IsValid())
+		{
+			const FString PluginName = FPaths::GetBaseFilename(Plugin->GetDescriptorFileName());
+			const FString IconPath = FString::Printf(TEXT("/%s/T_FleshRingAssetThumbnail"), *PluginName);
+			DefaultIconTexture = LoadObject<UTexture2D>(nullptr, *IconPath);
+		}
 	}
 
 	if (DefaultIconTexture && DefaultIconTexture->GetResource())

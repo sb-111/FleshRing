@@ -52,6 +52,7 @@ public class FleshRingEditor : ModuleRules
 				"MeshDescription",
 				"SkeletalMeshDescription",
 				"StaticMeshDescription",
+				"Projects",
 			}
 			);
 
